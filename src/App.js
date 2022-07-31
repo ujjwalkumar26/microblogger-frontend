@@ -1,5 +1,6 @@
 import React, {useContext } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import LegendaryCursor from "legendary-cursor";
 import './App.css';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
@@ -11,6 +12,11 @@ import ScrollToTop from "react-scroll-to-top";
 
 function App() {
   const { user } = useContext(AuthContext);
+  window.addEventListener("load", () => {
+    LegendaryCursor.init({
+      lineSize:         0.02
+    });
+  });
   return (
     <AuthProvider>
     <ScrollToTop smooth = {true} />

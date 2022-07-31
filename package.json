@@ -16,6 +16,7 @@
     "graphql": "^16.3.0",
     "graphql-tag": "^2.12.6",
     "jwt-decode": "^3.1.2",
+    "legendary-cursor": "^1.0.2",
     "moment": "^2.29.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -48,5 +49,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy" : "https://cryptic-brook-06322.herokuapp.com/"
+  "proxy": "https://cryptic-brook-06322.herokuapp.com/"
 }
