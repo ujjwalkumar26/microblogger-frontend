@@ -1,34 +1,40 @@
-import React, {useContext } from 'react';
-import { BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
-import LegendaryCursor from "legendary-cursor";
-import './App.css';
-import Home from './pages/Home';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Post from './pages/Post';
-import { AuthProvider, AuthContext } from './context/auth';
+import React, { useContext } from "react";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import "./App.css";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Post from "./pages/Post";
+import { AuthProvider, AuthContext } from "./context/auth";
 import ScrollToTop from "react-scroll-to-top";
-
 
 function App() {
   const { user } = useContext(AuthContext);
-  window.addEventListener("load", () => {
-    LegendaryCursor.init({
-      lineSize:         0.02
-    });
-  });
   return (
     <AuthProvider>
-    <ScrollToTop smooth = {true} />
-    <Router>
-      <Routes>
-        <Route exact path = '/' element = {<Home/>}/>
-        <Route exact path = '/signin' element = {user ? <Navigate to = "/"/> : <SignIn /> } />
-        <Route exact path = '/signup'  element = {user ? <Navigate to = "/"/> : <SignUp /> }/>
-        <Route exact path = '/posts/:postId' element = {<Post/>} />
-        <Route path="*" element ={ <Navigate to = '/'/>} />
-      </Routes>
-    </Router>
+      <ScrollToTop smooth={true} />
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route
+            exact
+            path="/signin"
+            element={user ? <Navigate to="/" /> : <SignIn />}
+          />
+          <Route
+            exact
+            path="/signup"
+            element={user ? <Navigate to="/" /> : <SignUp />}
+          />
+          <Route exact path="/posts/:postId" element={<Post />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
     </AuthProvider>
   );
 }
