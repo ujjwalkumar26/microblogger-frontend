@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Alert, Spin, Tag } from "antd";
+import { Form, Input, Button, Alert, Spin, Tag, Space } from "antd";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import FETCH_POSTS_QUERY from "../util/graphql";
@@ -17,6 +17,7 @@ function PostForm() {
   const handleTagAdd = (tag) => {
     setTags([...tags, tag]);
     setCurrentTag("");
+    form.resetFields(["add-tags"]);
   };
   const handleTagRemove = (tag) => {
     const newTags = tags.filter((t) => t !== tag);
@@ -24,7 +25,6 @@ function PostForm() {
   };
   const [createPost, { loading }] = useMutation(CREATE_POST, {
     update(proxy, result) {
-      // console.log(result);
       const data = proxy.readQuery({
         query: FETCH_POSTS_QUERY,
         variables: values,
@@ -35,13 +35,13 @@ function PostForm() {
         data: data,
       });
       setValues({ body: "" });
+      setCurrentTag("");
+      setTags([]);
       form.resetFields();
-      // window.location.reload();
     },
     onError(err) {
       console.log(err);
       setErrors(err.graphQLErrors[0].extensions.errors);
-      // navigate('/');
     },
     variables: values,
   });
@@ -89,14 +89,23 @@ function PostForm() {
           <TextArea rows={2} />
         </Form.Item>
 
-        <Form.Item label="Add tags">
-          <Input.Search
-            allowClear
-            enterButton="Add Tag"
-            placeholder="Enter tag"
-            onSearch={(value) => value && handleTagAdd(currentTag)}
-            onChange={(Event) => setCurrentTag(Event.target.value)}
-          />
+        <Form.Item label="Add tags" name="add-tags">
+          <Space direction="horizontal">
+            <Input
+              allowClear
+              placeholder="Enter tag"
+              onChange={(Event) => setCurrentTag(Event.target.value)}
+            />
+            <Button
+              type="primary"
+              onClick={() => {
+                currentTag && handleTagAdd(currentTag);
+              }}
+            >
+              Add Tag
+            </Button>
+          </Space>
+          <br />
           {tags.map((tag) => (
             <Tag closable onClose={() => handleTagRemove(tag)}>
               {tag}
