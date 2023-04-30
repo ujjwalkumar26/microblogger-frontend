@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Alert, Spin, Tag } from "antd";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
@@ -12,11 +12,11 @@ function PostForm() {
   const [values, setValues] = useState({
     body: "",
   });
+  const [currentTag, setCurrentTag] = useState("");
   const [tags, setTags] = useState([]);
-  const tagInputRef = useRef(null);
   const handleTagAdd = (tag) => {
     setTags([...tags, tag]);
-    tagInputRef.current.input.setValue("");
+    setCurrentTag("");
   };
   const handleTagRemove = (tag) => {
     const newTags = tags.filter((t) => t !== tag);
@@ -91,10 +91,11 @@ function PostForm() {
 
         <Form.Item label="Add tags">
           <Input.Search
+            allowClear
             enterButton="Add Tag"
             placeholder="Enter tag"
-            onSearch={(value) => handleTagAdd(value)}
-            ref={tagInputRef}
+            onSearch={(value) => value && handleTagAdd(currentTag)}
+            onChange={(Event) => setCurrentTag(Event.target.value)}
           />
           {tags.map((tag) => (
             <Tag closable onClose={() => handleTagRemove(tag)}>
